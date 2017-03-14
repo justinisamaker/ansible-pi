@@ -21,11 +21,6 @@
   become_method: sudo
   shell: /home/pi/init/anti-raspbian-bloat.sh
 
-- name: 'Run raspi init'
-  become: yes
-  become_method: sudo
-  shell: /home/pi/init/raspi-init.sh
-
 - name: 'Configure locale'
   become: yes
   become_method: sudo
