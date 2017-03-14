@@ -1,0 +1,7 @@
+---
+# Configure Raspberry Pi
+- name: Configure Raspberry Pi
+  hosts: all
+  remote_user: pi
+  roles:
+    - common

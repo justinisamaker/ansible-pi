@@ -1,0 +1,3 @@
+[pis]
+YOUR_PI_IP_HERE ansible_user=pi
+

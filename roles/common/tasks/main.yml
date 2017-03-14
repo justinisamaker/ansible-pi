@@ -1,0 +1,60 @@
+---
+# Base task for configuring a Raspi
+
+- name: 'Transfer init scripts'
+  become: yes
+  become_method: sudo
+  copy: src=./ dest=/home/pi/init/ mode=0755
+
+- apt: update_cache=yes
+  name: 'Update apt cache'
+  become: yes
+  become_method: sudo
+
+- apt: upgrade=dist
+  name: 'Upgrade apt dist'
+  become: yes
+  become_method: sudo
+
+- name: 'Thin out Raspbian'
+  become: yes
+  become_method: sudo
+  shell: /home/pi/init/anti-raspbian-bloat.sh
+
+- name: 'Run raspi init'
+  become: yes
+  become_method: sudo
+  shell: /home/pi/init/raspi-init.sh
+
+- name: 'Configure locale'
+  become: yes
+  become_method: sudo
+  shell: /home/pi/init/configure-locale.sh
+
+- name: 'Set timezone'
+  become: yes
+  become_method: sudo
+  shell: /home/pi/init/set-timezone.sh
+
+- name: 'Set keyboard layout'
+  become: yes
+  become_method: sudo
+  shell: /home/pi/init/set-keyboard-layout.sh
+
+- name: 'Install packages'
+  apt:
+    pkg={{item}}
+    state=installed
+  become: yes
+  become_method: sudo
+  with_items:
+    - git
+    - tightvncserver
+
+- name: 'Reboot'
+  become: yes
+  become_method: sudo
+  command: shutdown -r now "Ansible updates triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
